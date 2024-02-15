@@ -9,7 +9,8 @@ baud_possibilities = [50, 75, 110, 134, 150, 200, 300, 600, 1200,
 last_com_port = "COM8"
 last_baud_rate = int(115200)
 last_file_name = "MAXM86161_Data"
-last_save_place = os.path.dirname(__file__)
+# last_save_place = os.path.dirname(__file__)
+last_save_place = "C:/Users/kawoo/OneDrive/Documents/Woog School/Western/Software"
 
 
 def select_port():
@@ -123,9 +124,10 @@ def set_up_save():
 
 
 def choose_save_location():
+    global last_save_place
     directory_search = True
-    current = os.path.dirname(__file__)
-    default = os.path.dirname(__file__)
+    current = os.path.dirname(last_save_place)
+    default = os.path.dirname(last_save_place)
     print()
     print("Press Enter to set location")
     while directory_search:
