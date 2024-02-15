@@ -28,7 +28,7 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Arduino Xray Mean Energy ML Prediction</h3>
+<h3 align="center">Serial Monitor and Logger Tool</h3>
 
   <p align="center">
     This code monitors the serial ports of a Windows machine for serial communication over the COM ports. It gives a list of available ports and allows you to change the baud rate. It also provides the option to save the code while choosing the save location.
