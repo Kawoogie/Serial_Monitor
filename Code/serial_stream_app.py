@@ -89,7 +89,7 @@ def save_data_choice():
 def set_up_save():
     global last_save_place
     global last_file_name
-    print("Save file location:", last_save_place)
+    print("Save location:", last_save_place)
 
     location_change = input("Enter 'Y' to change location:")
     if location_change == "y" or location_change == "Y":
@@ -117,7 +117,7 @@ def set_up_save():
     # open the file to save the output to
     file = open(full_file_name, "w+")
 
-    header_text = "Red,Green,IR,Force,Time"
+    header_text = "Red,Green,IR,Ambient,Force,Current,"
     # Write the header information
     file.write(header_text + "\n")
     return file
@@ -136,7 +136,7 @@ def choose_save_location():
         print("Current path:")
         print(current)
         print("Folders: ", files)
-        addition = input("Please enter file name: ")
+        addition = input("Please enter directory name: ")
         if addition:
             current = os.path.join(current, addition)
             print()
@@ -179,6 +179,8 @@ def main():
     save = save_data_choice()
     if save:
         f = set_up_save()
+    else:
+        f = None
 
     print("Opening Serial Port")
     serial_port.open()
@@ -216,7 +218,10 @@ def main():
     print("No Connection\n")
     print("Serial Communication Closed\n\n\n")
 
+    f.close()
+
 
 if __name__ == "__main__":
     while True:
         main()
+
