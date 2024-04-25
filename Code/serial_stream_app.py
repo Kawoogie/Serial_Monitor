@@ -8,22 +8,24 @@ baud_possibilities = [50, 75, 110, 134, 150, 200, 300, 600, 1200,
 
 last_com_port = "COM8"
 last_baud_rate = int(115200)
-last_file_name = "MAXM86161_Data"
-# last_save_place = os.path.dirname(__file__)
-last_save_place = "C:/Users/kawoo/OneDrive/Documents/Woog School/Western/Software"
+last_file_name = "Serial_Stream_log"
+last_save_place = os.path.dirname(os.path.abspath(__file__))
 
 
 def select_port():
     global last_com_port
     if comports():
-        print("Default Port:", last_com_port)
+        # Read and list all available serial ports
         list_ports = []
+        print()
+        print("*"*40)
+        print()
         print("Available COM Ports:")
         for avail_port in comports():
             print(avail_port)
             list_ports.append(str(avail_port))
         print()
-        print("Press Enter for default.")
+        print("Press Enter for default port of", last_com_port + ".")
         port_num = input("Otherwise, enter port number: ")
         if not port_num:
             port_full = last_com_port
@@ -49,11 +51,10 @@ def select_port():
 
 def set_baud_rate():
     global last_baud_rate
-    print("Default Baud Rate: ", last_baud_rate)
     print("Possible Baud Rates:")
     print(baud_possibilities)
-    print("Press enter for default")
-    baud_input = input("Otherwise, select a baud rate: ")
+    print("Press enter for default baud rate of", last_baud_rate)
+    baud_input = input("Otherwise, enter a baud rate: ")
     if not baud_input:
         baud_input = last_baud_rate
     else:
@@ -71,7 +72,8 @@ def set_baud_rate():
 def print_opening_message():
     print("*" * 30)
     print("Reading Serial Port")
-    print("*" * 29, "*\n\n\n")
+    print("*" * 30)
+    print("\n\n\n")
 
 
 def save_data_choice():
@@ -98,6 +100,7 @@ def set_up_save():
     else:
         save_location = last_save_place
 
+    print()
     print("Save file name:", last_file_name)
     date_string = str(datetime.now().strftime("_%Y_%m_%d_%H_%M_%S")) + ".csv"
     print("With date:", date_string)
@@ -111,15 +114,13 @@ def set_up_save():
 
     new_file_name = new_file_name + date_string
     print("Creating File: ", new_file_name)
+    print()
 
     full_file_name = os.path.join(save_location, new_file_name)
 
     # open the file to save the output to
     file = open(full_file_name, "w+")
 
-    header_text = "Red,Green,IR,Ambient,Force,Current,"
-    # Write the header information
-    file.write(header_text + "\n")
     return file
 
 
@@ -164,7 +165,7 @@ def choose_save_location():
 def main():
 
     # Initialize a serial port object
-    serial_port = serial.Serial(timeout=1)
+    serial_port = serial.Serial(timeout=3)
 
     # Select the port to use
     port_selection = False
@@ -207,21 +208,27 @@ def main():
             print("Keyboard Interrupt")
             break
 
+        except serial.SerialException:
+            print("Host Closed Connection")
+            break
+
         except Exception as e:
             print(f"Error: {str(e)}")
             break
 
+    # Close the save file
+    if save:
+        f.close()
+
+    # Close serial_port if it is not closed
     if not (serial_port is None):
         serial_port.close()
-        print("Disconnecting Serial")
+        print("Serial Communication Closed\n\n\n")
 
-    print("No Connection\n")
-    print("Serial Communication Closed\n\n\n")
-
-    f.close()
+    serial_port.__del__()
+    print("Disconnected Serial")
 
 
 if __name__ == "__main__":
     while True:
         main()
-
