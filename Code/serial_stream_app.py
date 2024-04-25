@@ -8,9 +8,8 @@ baud_possibilities = [50, 75, 110, 134, 150, 200, 300, 600, 1200,
 
 last_com_port = "COM8"
 last_baud_rate = int(115200)
-last_file_name = "MAXM86161_Data"
-# last_save_place = os.path.dirname(__file__)
-last_save_place = "C:/Users/kawoo/OneDrive/Documents/Woog School/Western/Software"
+last_file_name = "Serial_Stream_log"
+last_save_place = os.path.dirname(os.path.abspath(__file__))
 
 
 def select_port():
@@ -117,9 +116,6 @@ def set_up_save():
     # open the file to save the output to
     file = open(full_file_name, "w+")
 
-    header_text = "Red,Green,IR,Ambient,Force,Current,"
-    # Write the header information
-    file.write(header_text + "\n")
     return file
 
 
@@ -164,7 +160,7 @@ def choose_save_location():
 def main():
 
     # Initialize a serial port object
-    serial_port = serial.Serial(timeout=1)
+    serial_port = serial.Serial(timeout=3)
 
     # Select the port to use
     port_selection = False
@@ -207,21 +203,27 @@ def main():
             print("Keyboard Interrupt")
             break
 
+        except serial.SerialException:
+            print("Host Closed Connection")
+            break
+
         except Exception as e:
             print(f"Error: {str(e)}")
             break
+        finally:
+            # Close the save file
+            if save:
+                f.close()
 
-    if not (serial_port is None):
-        serial_port.close()
-        print("Disconnecting Serial")
+            # Close serial_port if it is not closed
+            if not (serial_port is None):
+                serial_port.close()
+                print("Serial Communication Closed\n\n\n")
 
-    print("No Connection\n")
-    print("Serial Communication Closed\n\n\n")
-
-    f.close()
+        serial_port.__del__()
+        print("Disconnected Serial")
 
 
 if __name__ == "__main__":
     while True:
         main()
-
