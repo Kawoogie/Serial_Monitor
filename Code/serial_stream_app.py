@@ -70,7 +70,8 @@ def set_baud_rate():
 def print_opening_message():
     print("*" * 30)
     print("Reading Serial Port")
-    print("*" * 29, "*\n\n\n")
+    print("*" * 30)
+    print("\n\n\n")
 
 
 def save_data_choice():
