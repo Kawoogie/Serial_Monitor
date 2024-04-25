@@ -100,6 +100,7 @@ def set_up_save():
     else:
         save_location = last_save_place
 
+    print()
     print("Save file name:", last_file_name)
     date_string = str(datetime.now().strftime("_%Y_%m_%d_%H_%M_%S")) + ".csv"
     print("With date:", date_string)
@@ -113,6 +114,7 @@ def set_up_save():
 
     new_file_name = new_file_name + date_string
     print("Creating File: ", new_file_name)
+    print()
 
     full_file_name = os.path.join(save_location, new_file_name)
 
