@@ -9,7 +9,7 @@ baud_possibilities = [50, 75, 110, 134, 150, 200, 300, 600, 1200,
 last_com_port = "COM8"
 last_baud_rate = int(115200)
 last_file_name = "Serial_Stream_log"
-last_save_place = os.path.dirname(os.path.abspath(__file__))
+last_save_place = os.path.dirname(os.getcwd())
 
 
 def select_port():
