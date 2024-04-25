@@ -15,14 +15,17 @@ last_save_place = os.path.dirname(os.path.abspath(__file__))
 def select_port():
     global last_com_port
     if comports():
-        print("Default Port:", last_com_port)
+        # Read and list all available serial ports
         list_ports = []
+        print()
+        print("*"*40)
+        print()
         print("Available COM Ports:")
         for avail_port in comports():
             print(avail_port)
             list_ports.append(str(avail_port))
         print()
-        print("Press Enter for default.")
+        print("Press Enter for default port of", last_com_port + ".")
         port_num = input("Otherwise, enter port number: ")
         if not port_num:
             port_full = last_com_port
@@ -48,11 +51,10 @@ def select_port():
 
 def set_baud_rate():
     global last_baud_rate
-    print("Default Baud Rate: ", last_baud_rate)
     print("Possible Baud Rates:")
     print(baud_possibilities)
-    print("Press enter for default")
-    baud_input = input("Otherwise, select a baud rate: ")
+    print("Press enter for default baud rate of", last_baud_rate)
+    baud_input = input("Otherwise, enter a baud rate: ")
     if not baud_input:
         baud_input = last_baud_rate
     else:
@@ -211,18 +213,18 @@ def main():
         except Exception as e:
             print(f"Error: {str(e)}")
             break
-        finally:
-            # Close the save file
-            if save:
-                f.close()
 
-            # Close serial_port if it is not closed
-            if not (serial_port is None):
-                serial_port.close()
-                print("Serial Communication Closed\n\n\n")
+    # Close the save file
+    if save:
+        f.close()
 
-        serial_port.__del__()
-        print("Disconnected Serial")
+    # Close serial_port if it is not closed
+    if not (serial_port is None):
+        serial_port.close()
+        print("Serial Communication Closed\n\n\n")
+
+    serial_port.__del__()
+    print("Disconnected Serial")
 
 
 if __name__ == "__main__":
